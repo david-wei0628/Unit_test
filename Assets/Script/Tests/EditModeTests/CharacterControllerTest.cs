@@ -34,33 +34,52 @@ public class CharacterControllerTest
         var characterController = new GameObject().AddComponent<CharacterController>();
         characterController.init(); 
         characterController.SetMoveSpeed(moveSpeed: 10);
-        //var inputSystem = Substitute.For<IInputSystem>();
-        //inputSystem.GetHorizontalValue().Returns(1);
+
         var inputSystem = Substitute.For<IInputSystem>();
-        //characterController.SetInputSystem(inputSystem: Substitute.For<InputSystem>());
+
         inputSystem.GetHorizontalValue().Returns(returnThis: 1);
         inputSystem.GetVerticalValue().Returns(returnThis: 1);
         characterController.SetInputSystem(inputSystem);
         characterController.Update();
         var rigidbody = characterController.GetComponent<Rigidbody>();
         //var rigidbody = characterController.GetComponent<Transform>();
+        var transbody = characterController.GetComponent<Transform>();
 
         Assert.AreEqual(new Vector3(10, 0, 10), rigidbody.velocity);
     }
     [Test]
     [Category(name:"RayMove")]
-    public void _04_rayMoveTest()
+    public void _04_rayMoveTest_ScrollWheel()
     {
         var rayMove = new GameObject().AddComponent<RayMove>();
+        rayMove.init();
         var inputSystem = Substitute.For<IInputSystem>();
-        inputSystem.GetScrollWheelValue().Returns(returnThis: 1);
+        inputSystem.GetScrollWheelValue().Returns(returnThis: 0.1f);
+
         rayMove.SetInputSystem(inputSystem);
         rayMove.ScrollView();
-        var WheelValue = rayMove.GetComponent<Rigidbody>();
-        Assert.AreEqual(new Vector3(10, 0, 0), WheelValue.velocity);
+        var WheelValue = rayMove.GetComponent<Transform>();
+        Assert.AreEqual(new Vector3(10, 0, 0), WheelValue.position);
+    }
+    [Test]
+    [Category(name: "RayMove")]
+    public void _05_rayMoveTest_HandleMovement()
+    {
+        var rayMove =new GameObject().AddComponent<RayMove>();
+        rayMove.init();
+        rayMove.SetMoveSpeed(moveSpeed: 10);
+        var inputSystem = Substitute.For<IInputSystem>();
+        inputSystem.GetHorizontalValue().Returns(returnThis: 1);
+        inputSystem.GetVerticalValue().Returns(returnThis: 0);
+
+        rayMove.SetInputSystem(inputSystem);
+        rayMove.PlayUnitMove();
+        var PlayUnitMove = rayMove.GetComponent<Transform>();
+
+        Assert.AreEqual(new Vector3(10, 0, 0), PlayUnitMove.position);
     }
 
-    
+
 
 
 }

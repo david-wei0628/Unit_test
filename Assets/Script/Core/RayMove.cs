@@ -25,7 +25,12 @@ public class RayMove : MonoBehaviour
         QualitySettings.vSyncCount = 0;//垂直同步
         Application.targetFrameRate = 100;//FPS禎數
 
-        init();
+        CamearTrans.transform.position = new Vector3(PlayTrans.position.x, PlayTrans.position.y + 4, PlayTrans.position.z - 7);
+        this.transform.localEulerAngles = new Vector3(0, 0, 0);
+        offset = CameTrans.position - PlayTrans.position;
+        MoveSpeed = Time.deltaTime * 20;
+        CameTrans.position = offset + PlayTrans.position;
+        CamerTrans();
     }
 
     // Update is called once per frame
@@ -61,7 +66,7 @@ public class RayMove : MonoBehaviour
             //Debug.Log(this.GetComponent<Rigidbody>().velocity.magnitude);
             if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.S))
             {
-                KeyBoardMoveCamera(Input.GetAxis("Vertical") ,"V");
+                KeyBoardMoveCamera(Input.GetAxis("Vertical"), "V");
             }
 
             if (Input.GetAxis("Vertical") < 0)
@@ -102,12 +107,7 @@ public class RayMove : MonoBehaviour
 
     public void init()
     {
-        CamearTrans.transform.position = new Vector3(PlayTrans.position.x, PlayTrans.position.y + 4, PlayTrans.position.z - 7);
-        this.transform.localEulerAngles = new Vector3(0, 0, 0);
-        offset = CameTrans.position - PlayTrans.position;
-        MoveSpeed = Time.deltaTime * 20;
-        CameTrans.position = offset + PlayTrans.position;
-        CamerTrans();
+        inputSystem = new InputSystem();
     }
 
     public void SetInputSystem(IInputSystem inputSystem)
@@ -115,11 +115,21 @@ public class RayMove : MonoBehaviour
         this.inputSystem = inputSystem;
     }
 
+    public void PlayUnitMove()
+    {
+        transform.Translate(inputSystem.GetHorizontalValue() * MoveSpeed, 0, inputSystem.GetVerticalValue() * MoveSpeed);
+    }
+
+    public void SetMoveSpeed(float moveSpeed)
+    {
+        this.MoveSpeed = moveSpeed;
+    }
+
     public void ScrollView()
     {
         offset = CameTrans.position - PlayTrans.position;
         distance = offset.magnitude;
-        //distance -= Input.GetAxis("Mouse ScrollWheel") * 10;  
+        //distance -= Input.GetAxis("Mouse ScrollWheel") * 10;
         distance -= inputSystem.GetVerticalValue() * 10;
         Debug.Log(distance);
         if (distance > 26)
@@ -225,7 +235,7 @@ public class RayMove : MonoBehaviour
         //Y,Z做導向,Z平行於場景  X 做指向
     }
 
-    public void CamerTrans()
+    void CamerTrans()
     {
         CamearTrans.transform.LookAt(this.transform.position);
         //Debug.Log(CamearTrans.transform.localEulerAngles.x);
@@ -240,7 +250,7 @@ public class RayMove : MonoBehaviour
         //Debug.Log(CamearTrans.transform.localEulerAngles.x);
     }
 
-    public void RayMoveCamera()
+    void RayMoveCamera()
     {
         Vector3 InitCoor = CamearTrans.transform.position;
         this.transform.LookAt(maps);
@@ -248,7 +258,7 @@ public class RayMove : MonoBehaviour
         CamerTrans();
     }
 
-    public void KeyBoardMoveCamera(float move,string direc)
+    void KeyBoardMoveCamera(float move,string direc)
     {
         Vector3 InitCoor = CamearTrans.transform.position;
         float PlayEulerY;

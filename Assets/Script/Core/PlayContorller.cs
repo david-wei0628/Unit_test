@@ -16,10 +16,7 @@ public class PlayContorller : MonoBehaviour
     /// </summary>
     private void Update()
     {
-        if(Input.GetKey("a"))
-        {
-            Debug.Log("A");
-        }
+        
     }
 
 }

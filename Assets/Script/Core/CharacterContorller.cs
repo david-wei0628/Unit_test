@@ -33,10 +33,10 @@ namespace UnitTest
         public void init()
         {
             rb = GetComponent<Rigidbody>();
-            if(rb == null) rb = gameObject.AddComponent<Rigidbody>();
+            if (rb == null) rb = gameObject.AddComponent<Rigidbody>();
             Assert.IsNotNull(rb, "rb is null");
             inputSystem = new InputSystem();
-        }
+        }   
 
         void HandleMovement()
         {
