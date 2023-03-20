@@ -24,6 +24,7 @@ public class RayMove : MonoBehaviour
     {
         QualitySettings.vSyncCount = 0;//垂直同步
         Application.targetFrameRate = 100;//FPS禎數
+
         //init_Unit();
         PlayMode_Star();
     }
@@ -115,7 +116,6 @@ public class RayMove : MonoBehaviour
     void PlayMode_Star()
     {
         CameTrans.localPosition = new Vector3(PlayTrans.position.x, PlayTrans.position.y + 4, PlayTrans.position.z - 7);
-        //CameTrans.localPosition = new Vector3(this.transform.position.x, this.transform.position.y + 4, this.transform.position.z - 7);
 
         transform.localEulerAngles = new Vector3(0, 0, 0);
         offset = CameTrans.position - PlayTrans.position;
