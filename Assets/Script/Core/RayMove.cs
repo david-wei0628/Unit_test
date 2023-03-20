@@ -24,13 +24,8 @@ public class RayMove : MonoBehaviour
     {
         QualitySettings.vSyncCount = 0;//垂直同步
         Application.targetFrameRate = 100;//FPS禎數
-
-        CamearTrans.transform.position = new Vector3(PlayTrans.position.x, PlayTrans.position.y + 4, PlayTrans.position.z - 7);
-        this.transform.localEulerAngles = new Vector3(0, 0, 0);
-        offset = CameTrans.position - PlayTrans.position;
-        MoveSpeed = Time.deltaTime * 20;
-        CameTrans.position = offset + PlayTrans.position;
-        CamerTrans();
+        //init_Unit();
+        PlayMode_Star();
     }
 
     // Update is called once per frame
@@ -105,8 +100,28 @@ public class RayMove : MonoBehaviour
 
     }
 
-    public void init()
+    public void init_Unit()
     {
+        GameObject Unit_camObj = new GameObject();
+        CameTrans = Unit_camObj.GetComponent<Transform>();
+        PlayTrans = GetComponent<Transform>();  
+        PlayTrans.position = new Vector3(0, 0.5f, 0);
+        Debug.Log(CameTrans.position);
+        Debug.Log(PlayTrans.position);
+        PlayMode_Star();
+        //inputSystem = new InputSystem();
+    }
+
+    void PlayMode_Star()
+    {
+        CameTrans.localPosition = new Vector3(PlayTrans.position.x, PlayTrans.position.y + 4, PlayTrans.position.z - 7);
+        //CameTrans.localPosition = new Vector3(this.transform.position.x, this.transform.position.y + 4, this.transform.position.z - 7);
+
+        transform.localEulerAngles = new Vector3(0, 0, 0);
+        offset = CameTrans.position - PlayTrans.position;
+        MoveSpeed = Time.deltaTime * 20;
+        CameTrans.position = offset + PlayTrans.position;
+        CamerTrans();
         inputSystem = new InputSystem();
     }
 
@@ -127,11 +142,10 @@ public class RayMove : MonoBehaviour
 
     public void ScrollView()
     {
-        offset = CameTrans.position - PlayTrans.position;
+        offset = CameTrans.position - transform.position;
         distance = offset.magnitude;
         //distance -= Input.GetAxis("Mouse ScrollWheel") * 10;
-        distance -= inputSystem.GetVerticalValue() * 10;
-        Debug.Log(distance);
+        distance -= inputSystem.GetScrollWheelValue() * 10; 
         if (distance > 26)
         {   
             distance = 26;
@@ -141,7 +155,7 @@ public class RayMove : MonoBehaviour
             distance = 5;
         }
         offset = offset.normalized * distance;
-        CamearTrans.transform.position = offset + PlayTrans.position;
+        CameTrans.position = offset + transform.position;
     }
 
     public void SelectRay()
@@ -162,7 +176,7 @@ public class RayMove : MonoBehaviour
 
     public void PlayMove()
     {
-        this.transform.position = Vector3.Slerp(this.transform.position, maps, 0.1f);
+        this.transform.position = Vector3.Lerp(this.transform.position, maps, 0.1f);
         if (Vector3.Distance(this.transform.position, maps) > 0.1f )
         {
             if (Input.GetAxis("Horizontal") == 0 && Input.GetAxis("Vertical") == 0)
@@ -237,15 +251,15 @@ public class RayMove : MonoBehaviour
 
     void CamerTrans()
     {
-        CamearTrans.transform.LookAt(this.transform.position);
+        CameTrans.LookAt(this.transform.position);
         //Debug.Log(CamearTrans.transform.localEulerAngles.x);
-        if(CamearTrans.transform.localEulerAngles.x > 300)
+        if(CameTrans.localEulerAngles.x > 300)
         {
-            CamearTrans.transform.localEulerAngles = new Vector3(CameTrans.localEulerAngles.x + 20, CameTrans.localEulerAngles.y, 0);
+            CameTrans.localEulerAngles = new Vector3(CameTrans.localEulerAngles.x + 20, CameTrans.localEulerAngles.y, 0);
         }
         else
         {
-            CamearTrans.transform.localEulerAngles = new Vector3(CameTrans.localEulerAngles.x - 20, CameTrans.localEulerAngles.y, 0);        
+            CameTrans.localEulerAngles = new Vector3(CameTrans.localEulerAngles.x - 20, CameTrans.localEulerAngles.y, 0);        
         }
         //Debug.Log(CamearTrans.transform.localEulerAngles.x);
     }

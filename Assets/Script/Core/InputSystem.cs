@@ -25,7 +25,7 @@ namespace UnitTest
         }
         public float GetScrollWheelValue()
         {
-            float MouseScrollWheel = Input.GetAxisRaw(axisName: "Mouse ScrollWheel");
+            float MouseScrollWheel = Input.GetAxisRaw("Mouse ScrollWheel");
             return MouseScrollWheel;
         }
 

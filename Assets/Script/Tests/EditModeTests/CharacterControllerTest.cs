@@ -49,34 +49,35 @@ public class CharacterControllerTest
     }
     [Test]
     [Category(name:"RayMove")]
-    public void _04_rayMoveTest_ScrollWheel()
+    public void _04_rayMoveTest_Camear_ScrollWheel()
     {
         var rayMove = new GameObject().AddComponent<RayMove>();
-        rayMove.init();
+        rayMove.init_Unit();
         var inputSystem = Substitute.For<IInputSystem>();
-        inputSystem.GetScrollWheelValue().Returns(returnThis: 0.1f);
-
+        inputSystem.GetScrollWheelValue().Returns(returnThis: -0.1f);
         rayMove.SetInputSystem(inputSystem);
+
         rayMove.ScrollView();
-        var WheelValue = rayMove.GetComponent<Transform>();
-        Assert.AreEqual(new Vector3(10, 0, 0), WheelValue.position);
+        var WheelValue = rayMove.CameTrans.GetComponent<Transform>();
+        Assert.AreEqual(new Vector3(0, 4, 0), WheelValue.position);
     }
     [Test]
     [Category(name: "RayMove")]
     public void _05_rayMoveTest_HandleMovement()
     {
         var rayMove =new GameObject().AddComponent<RayMove>();
-        rayMove.init();
+        
+        rayMove.init_Unit();
+
         rayMove.SetMoveSpeed(moveSpeed: 10);
         var inputSystem = Substitute.For<IInputSystem>();
         inputSystem.GetHorizontalValue().Returns(returnThis: 1);
         inputSystem.GetVerticalValue().Returns(returnThis: 0);
-
         rayMove.SetInputSystem(inputSystem);
         rayMove.PlayUnitMove();
-        var PlayUnitMove = rayMove.GetComponent<Transform>();
-
-        Assert.AreEqual(new Vector3(10, 0, 0), PlayUnitMove.position);
+        var PlayUnitMove = rayMove.transform.GetComponent<Transform>();
+        
+        Assert.AreEqual(new Vector3(10, 0.5f, 0), PlayUnitMove.position);
     }
 
 
