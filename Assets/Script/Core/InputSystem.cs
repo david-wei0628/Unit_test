@@ -9,6 +9,7 @@ namespace UnitTest
         float GetHorizontalValue();
         float GetVerticalValue();
         float GetScrollWheelValue();
+        Vector2 GetMousePosition();
     }
 
     public class InputSystem : IInputSystem
@@ -27,6 +28,12 @@ namespace UnitTest
         {
             float MouseScrollWheel = Input.GetAxisRaw("Mouse ScrollWheel");
             return MouseScrollWheel;
+        }
+
+        public Vector2 GetMousePosition()
+        {
+            Vector2 mousePosition = Input.mousePosition;
+            return mousePosition;
         }
 
 

@@ -105,10 +105,10 @@ public class RayMove : MonoBehaviour
     {
         GameObject Unit_camObj = new GameObject();
         CameTrans = Unit_camObj.GetComponent<Transform>();
+        Unit_camObj.AddComponent<Camera>();
+        CamearTrans = Unit_camObj.GetComponent<Camera>();
         PlayTrans = GetComponent<Transform>();  
         PlayTrans.position = new Vector3(0, 0.5f, 0);
-        Debug.Log(CameTrans.position);
-        Debug.Log(PlayTrans.position);
         PlayMode_Star();
         //inputSystem = new InputSystem();
     }
@@ -160,11 +160,13 @@ public class RayMove : MonoBehaviour
 
     public void SelectRay()
     {
-        ray = CamearTrans.GetComponent<Camera>().ScreenPointToRay(Input.mousePosition);
+        //ray = CamearTrans.GetComponent<Camera>().ScreenPointToRay(Input.mousePosition);
+        ray = CamearTrans.GetComponent<Camera>().ScreenPointToRay(inputSystem.GetMousePosition());
+
         Physics.Raycast(ray, out hit, 3500);
         maps = hit.point;
-        maps.y = this.transform.position.y;
-        Debug.DrawLine(CamearTrans.transform.position, hit.transform.position, Color.blue, 0.5f, true);
+        maps.y = transform.position.y;
+        //Debug.DrawLine(CamearTrans.transform.position, hit.transform.position, Color.blue, 0.5f, true);
 
         //Instantiate(MouseVFX, maps, new Quaternion(0, 0, 0,0));
         if (Vector3.Distance(this.transform.position, maps) < 100f)
@@ -179,7 +181,7 @@ public class RayMove : MonoBehaviour
         this.transform.position = Vector3.Lerp(this.transform.position, maps, 0.1f);
         if (Vector3.Distance(this.transform.position, maps) > 0.1f )
         {
-            if (Input.GetAxis("Horizontal") == 0 && Input.GetAxis("Vertical") == 0)
+            if (inputSystem.GetHorizontalValue() == 0 && inputSystem.GetVerticalValue() == 0)
             { 
                 Invoke("PlayMove", 0.05f);
             }
