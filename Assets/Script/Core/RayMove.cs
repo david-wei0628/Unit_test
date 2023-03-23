@@ -160,7 +160,7 @@ public class RayMove : MonoBehaviour
         }
     }
 
-    public void PlayJump()
+    void PlayJump()
     {
         transform.localPosition += new Vector3(0, 100, 0) * Time.deltaTime;
         if (transform.localPosition.y < 4)
@@ -177,7 +177,7 @@ public class RayMove : MonoBehaviour
         //}
     }
 
-    public void CameRat()
+    void CameRat()
     {
         //CamearTrans.transform.RotateAround(this.transform.position, Vector3.up, Input.GetAxis("Mouse X") * 5);
         //CamearTrans.transform.RotateAround(this.transform.position, Vector3.left, Input.GetAxis("Mouse Y") * 5);
@@ -247,15 +247,19 @@ public class RayMove : MonoBehaviour
         Vector3 InitCoor = CamearTrans.transform.position;
         float PlayEulerY;
         PlayEulerY = transform.localEulerAngles.y + CamearTrans.transform.localEulerAngles.y;
+        if (inputSystem.GetVerticalValue() < 0)
+        {
+            PlayEulerY += 180;
+        }
         this.transform.localEulerAngles = new Vector3(0, PlayEulerY, 0);
-        
         CamearTrans.transform.position = InitCoor;
         CamerTrans();
     }
 
-    void PlayKeyBoardMove()
+    public void PlayKeyBoardMove()
     {
         KeyBoardMoveCamera();
-        this.transform.Translate(inputSystem.GetHorizontalValue() * MoveSpeed, 0, inputSystem.GetVerticalValue() * MoveSpeed);
+        
+        this.transform.Translate(Mathf.Pow(inputSystem.GetHorizontalValue(),2) * MoveSpeed, 0, Mathf.Pow(inputSystem.GetVerticalValue(),2) * MoveSpeed);
     }
 }

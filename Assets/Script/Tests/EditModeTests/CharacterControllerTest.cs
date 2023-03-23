@@ -61,7 +61,7 @@ public class CharacterControllerTest
         rayMove.ScrollView();
         var WheelValue = rayMove.CameTrans.GetComponent<Transform>();
 
-        Debug.Log(WheelValue.position);
+        //Debug.Log(WheelValue.position);
 
     }
 
@@ -76,12 +76,12 @@ public class CharacterControllerTest
         rayMove.SetMoveSpeed(moveSpeed: 10);
         var inputSystem = Substitute.For<IInputSystem>();
         inputSystem.GetHorizontalValue().Returns(returnThis: 1);
-        inputSystem.GetVerticalValue().Returns(returnThis: 0);
+        inputSystem.GetVerticalValue().Returns(returnThis: -1);
         rayMove.SetInputSystem(inputSystem);
-        rayMove.PlayUnitMove();
+        rayMove.PlayKeyBoardMove();
         var PlayUnitMove = rayMove.transform.GetComponent<Transform>();
-        
-        Assert.AreEqual(new Vector3(10, 0.5f, 0), PlayUnitMove.position);
+        Debug.Log(PlayUnitMove.localEulerAngles.y);
+        Assert.AreEqual(new Vector3(10, 0.5f, 10), PlayUnitMove.position);
     }
     
     [Test]
