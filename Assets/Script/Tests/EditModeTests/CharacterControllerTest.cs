@@ -55,11 +55,13 @@ public class CharacterControllerTest
         var rayMove = new GameObject().AddComponent<RayMove>();
         rayMove.init_Unit();
         var inputSystem = Substitute.For<IInputSystem>();
-        inputSystem.GetScrollWheelValue().Returns(returnThis: -0.1f);
+        inputSystem.GetScrollWheelValue().Returns(returnThis: -1f);
         rayMove.SetInputSystem(inputSystem);
 
         rayMove.ScrollView();
         var WheelValue = rayMove.CameTrans.GetComponent<Transform>();
+
+        Debug.Log(WheelValue.position);
 
     }
 
@@ -92,13 +94,13 @@ public class CharacterControllerTest
         rayMove.SetMoveSpeed(moveSpeed: 10);
         var inputSystem = Substitute.For<IInputSystem>();
 
-        inputSystem.GetMousePosition().Returns(new Vector2(635, 596));
+        inputSystem.GetMousePosition().Returns(new Vector2(418, 231));
         rayMove.SetInputSystem(inputSystem);
         rayMove.SelectRay();
 
         var PlayUnitMoveTransform = rayMove.transform.GetComponent<Transform>();
 
-        //Assert.AreEqual(new Vector3(0, 0, 0), PlayUnitMoveTransform.rotation);
+        Assert.AreEqual(new Vector3(0, 0, 0), PlayUnitMoveTransform.localEulerAngles);
         Assert.AreEqual(new Vector3(100, 0.5f, 0), PlayUnitMoveTransform.position);
     }
 

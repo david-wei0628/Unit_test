@@ -57,40 +57,9 @@ public class RayMove : MonoBehaviour
             //Destroy(MouseVFX);
         }
 
-        if (Input.GetAxis("Vertical") != 0)
+        if (inputSystem.GetVerticalValue() != 0 || inputSystem.GetHorizontalValue() != 0)
         {
-            //Debug.Log(this.GetComponent<Rigidbody>().velocity.magnitude);
-            if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.S))
-            {
-                KeyBoardMoveCamera(Input.GetAxis("Vertical"), "V");
-            }
-
-            if (Input.GetAxis("Vertical") < 0)
-            {
-                this.transform.Translate(0, 0, -Input.GetAxis("Vertical") * MoveSpeed);
-            }
-            else
-            {
-                this.transform.Translate(0, 0, Input.GetAxis("Vertical") * MoveSpeed);
-            }
-        }
-
-        if (Input.GetAxis("Horizontal") != 0)
-        {
-            //Debug.Log(this.GetComponent<Rigidbody>().velocity.magnitude);
-            if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.A))
-            {
-                KeyBoardMoveCamera(Input.GetAxis("Horizontal"), "H");
-            }
-            //this.transform.Translate(0, 0, Input.GetAxis("Horizontal") * MoveSpeed);
-            if (Input.GetAxis("Horizontal") < 0)
-            {
-                this.transform.Translate(0, 0, -Input.GetAxis("Horizontal") * MoveSpeed);
-            }
-            else
-            {
-                this.transform.Translate(0, 0, Input.GetAxis("Horizontal") * MoveSpeed);
-            }
+            PlayKeyBoardMove();
         }
 
         if (Input.GetAxis("Jump") == 1 && transform.localPosition.y <= 0.06f)
@@ -119,7 +88,7 @@ public class RayMove : MonoBehaviour
 
         transform.localEulerAngles = new Vector3(0, 0, 0);
         offset = CameTrans.position - PlayTrans.position;
-        MoveSpeed = Time.deltaTime * 20;
+        MoveSpeed = Time.deltaTime * 10;
         CameTrans.position = offset + PlayTrans.position;
         CamerTrans();
         inputSystem = new InputSystem();
@@ -167,7 +136,6 @@ public class RayMove : MonoBehaviour
         maps = hit.point;
         maps.y = transform.position.y;
         //Debug.DrawLine(CamearTrans.transform.position, hit.transform.position, Color.blue, 0.5f, true);
-
         //Instantiate(MouseVFX, maps, new Quaternion(0, 0, 0,0));
         if (Vector3.Distance(this.transform.position, maps) < 100f)
         {
@@ -274,39 +242,20 @@ public class RayMove : MonoBehaviour
         CamerTrans();
     }
 
-    void KeyBoardMoveCamera(float move,string direc)
+    void KeyBoardMoveCamera()
     {
         Vector3 InitCoor = CamearTrans.transform.position;
         float PlayEulerY;
         PlayEulerY = transform.localEulerAngles.y + CamearTrans.transform.localEulerAngles.y;
-        switch (direc)
-        {
-            case "V":
-                if (move < 0)
-                {
-                    this.transform.localEulerAngles = new Vector3(0, PlayEulerY + 180, 0);
-                }
-                else
-                {
-                    this.transform.localEulerAngles = new Vector3(0, PlayEulerY, 0);
-                }
-                //this.transform.Translate(0, 0, move * MoveSpeed);
-                break;
-            case "H":
-                if (move < 0)
-                {
-                    this.transform.localEulerAngles = new Vector3(0, PlayEulerY + 270, 0);
-                }
-                else
-                {
-                    this.transform.localEulerAngles = new Vector3(0, PlayEulerY + 90, 0);
-                }
-                //this.transform.Translate(move * MoveSpeed, 0, 0);
-                break;
-        }
-
-        //this.transform.Translate(0, 0, move * MoveSpeed);
+        this.transform.localEulerAngles = new Vector3(0, PlayEulerY, 0);
+        
         CamearTrans.transform.position = InitCoor;
         CamerTrans();
+    }
+
+    void PlayKeyBoardMove()
+    {
+        KeyBoardMoveCamera();
+        this.transform.Translate(inputSystem.GetHorizontalValue() * MoveSpeed, 0, inputSystem.GetVerticalValue() * MoveSpeed);
     }
 }
