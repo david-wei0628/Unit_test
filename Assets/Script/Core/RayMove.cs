@@ -247,9 +247,40 @@ public class RayMove : MonoBehaviour
         Vector3 InitCoor = CamearTrans.transform.position;
         float PlayEulerY;
         PlayEulerY = transform.localEulerAngles.y + CamearTrans.transform.localEulerAngles.y;
-        if (inputSystem.GetVerticalValue() < 0)
+        //V<0 180
+        //H<0 270 -90
+        //H>0 90
+        if (inputSystem.GetVerticalValue() < 0 && inputSystem.GetHorizontalValue() == 0)
         {
             PlayEulerY += 180;
+        }
+        else if (inputSystem.GetVerticalValue() < 0 && inputSystem.GetHorizontalValue() < 0)
+        {
+            PlayEulerY += 225;
+        }
+        else if (inputSystem.GetVerticalValue() < 0 && inputSystem.GetHorizontalValue() > 0)
+        {
+            PlayEulerY += 135;
+        }
+        if (inputSystem.GetVerticalValue() > 0 && inputSystem.GetHorizontalValue() == 0)
+        {
+            PlayEulerY += 0;
+        }
+        else if (inputSystem.GetVerticalValue() > 0 && inputSystem.GetHorizontalValue() < 0)
+        {
+            PlayEulerY -= 45;
+        }
+        else if (inputSystem.GetVerticalValue() > 0 && inputSystem.GetHorizontalValue() > 0)
+        {
+            PlayEulerY += 45;
+        }
+        if (inputSystem.GetVerticalValue() == 0 && inputSystem.GetHorizontalValue() > 0)
+        {
+            PlayEulerY += 90;
+        }
+        if (inputSystem.GetVerticalValue() == 0 && inputSystem.GetHorizontalValue() < 0)
+        {
+            PlayEulerY -= 90;
         }
         this.transform.localEulerAngles = new Vector3(0, PlayEulerY, 0);
         CamearTrans.transform.position = InitCoor;
@@ -259,7 +290,12 @@ public class RayMove : MonoBehaviour
     public void PlayKeyBoardMove()
     {
         KeyBoardMoveCamera();
-        
-        this.transform.Translate(Mathf.Pow(inputSystem.GetHorizontalValue(),2) * MoveSpeed, 0, Mathf.Pow(inputSystem.GetVerticalValue(),2) * MoveSpeed);
+
+        if (inputSystem.GetVerticalValue() == 0 && inputSystem.GetHorizontalValue() != 0)
+            this.transform.Translate(0, 0, Mathf.Abs(inputSystem.GetHorizontalValue()) * MoveSpeed);
+        else if (inputSystem.GetVerticalValue() != 0 && inputSystem.GetHorizontalValue() == 0)
+            this.transform.Translate(0, 0, Mathf.Abs(inputSystem.GetVerticalValue()) * MoveSpeed);
+        else
+            this.transform.Translate(0, 0, Mathf.Abs(inputSystem.GetVerticalValue()* inputSystem.GetHorizontalValue()) * MoveSpeed);
     }
 }
