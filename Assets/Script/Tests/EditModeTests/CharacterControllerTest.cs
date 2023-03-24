@@ -75,7 +75,7 @@ public class CharacterControllerTest
 
         rayMove.SetMoveSpeed(moveSpeed: 10);
         var inputSystem = Substitute.For<IInputSystem>();
-        inputSystem.GetVerticalValue().Returns(returnThis: 1);
+        inputSystem.GetVerticalValue().Returns(returnThis: 0);
         inputSystem.GetHorizontalValue().Returns(returnThis: -1);
         rayMove.SetInputSystem(inputSystem);
         rayMove.PlayKeyBoardMove();

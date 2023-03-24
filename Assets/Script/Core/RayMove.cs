@@ -247,44 +247,42 @@ public class RayMove : MonoBehaviour
         Vector3 InitCoor = CamearTrans.transform.position;
         float PlayEulerY;
         PlayEulerY = transform.localEulerAngles.y + CamearTrans.transform.localEulerAngles.y;
-        //V<0 180
-        //H<0 270 -90
-        //H>0 90
-        if (inputSystem.GetVerticalValue() < 0 && inputSystem.GetHorizontalValue() == 0)
-        {
-            PlayEulerY += 180;
-        }
-        else if (inputSystem.GetVerticalValue() < 0 && inputSystem.GetHorizontalValue() < 0)
-        {
-            PlayEulerY += 225;
-        }
-        else if (inputSystem.GetVerticalValue() < 0 && inputSystem.GetHorizontalValue() > 0)
-        {
-            PlayEulerY += 135;
-        }
-        if (inputSystem.GetVerticalValue() > 0 && inputSystem.GetHorizontalValue() == 0)
-        {
-            PlayEulerY += 0;
-        }
-        else if (inputSystem.GetVerticalValue() > 0 && inputSystem.GetHorizontalValue() < 0)
-        {
-            PlayEulerY -= 45;
-        }
-        else if (inputSystem.GetVerticalValue() > 0 && inputSystem.GetHorizontalValue() > 0)
-        {
-            PlayEulerY += 45;
-        }
-        if (inputSystem.GetVerticalValue() == 0 && inputSystem.GetHorizontalValue() > 0)
-        {
-            PlayEulerY += 90;
-        }
-        if (inputSystem.GetVerticalValue() == 0 && inputSystem.GetHorizontalValue() < 0)
-        {
-            PlayEulerY -= 90;
-        }
+        //V<0 180 H<0 270 H>0 90
+
+        PlayEulerY += KeyInputRot("V") + KeyInputRot("H");
+
         this.transform.localEulerAngles = new Vector3(0, PlayEulerY, 0);
         CamearTrans.transform.position = InitCoor;
         CamerTrans();
+    }
+
+    int KeyInputRot(string InputKey)
+    {
+        int Rot = 0;
+        if (InputKey == "V")
+        {
+            if (inputSystem.GetVerticalValue() < 0)
+            {
+                Rot = 180;
+            }
+        }
+        if (InputKey == "H")
+        {
+            if (inputSystem.GetHorizontalValue() > 0)
+            {
+                Rot = 90 * (int)Mathf.Sign(inputSystem.GetVerticalValue());
+            }
+            if (inputSystem.GetHorizontalValue() < 0)
+            {
+                Rot = -90 * (int)Mathf.Sign(inputSystem.GetVerticalValue());
+            }
+
+            if (inputSystem.GetVerticalValue() != 0)
+            {
+                Rot /= 2;
+            }
+        }
+        return Rot;
     }
 
     public void PlayKeyBoardMove()
