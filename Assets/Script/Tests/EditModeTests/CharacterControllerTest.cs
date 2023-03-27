@@ -80,7 +80,7 @@ public class CharacterControllerTest
         rayMove.SetInputSystem(inputSystem);
         rayMove.PlayKeyBoardMove();
         var PlayUnitMove = rayMove.transform.GetComponent<Transform>();
-        Debug.Log(PlayUnitMove.localEulerAngles.y);
+
         Assert.AreEqual(new Vector3(10, 0.5f, 10), PlayUnitMove.position);
     }
     
@@ -102,6 +102,25 @@ public class CharacterControllerTest
 
         Assert.AreEqual(new Vector3(0, 0, 0), PlayUnitMoveTransform.localEulerAngles);
         Assert.AreEqual(new Vector3(100, 0.5f, 0), PlayUnitMoveTransform.position);
+    }
+
+    [Test]
+    [Category(name: "RayMove")]
+    public void _07_rayMoveTest_ScreenPointToRay()
+    {
+        var rayMove =new GameObject().AddComponent<RayMove>();
+        
+        rayMove.init_Unit();
+        var inputSystem = Substitute.For<IInputSystem>();
+
+        inputSystem.GetMouseXValue().Returns(returnThis:36);
+        inputSystem.GetMouseYValue().Returns(returnThis:20);
+        rayMove.SetInputSystem(inputSystem);
+        rayMove.CameRat();
+
+        var PlayUnitMoveTransform = rayMove.CameTrans.transform.GetComponent<Transform>();
+        Debug.Log(PlayUnitMoveTransform.localEulerAngles);
+        //Debug.Log(PlayUnitMoveTransform.localPosition);
     }
 
 
