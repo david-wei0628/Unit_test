@@ -188,7 +188,6 @@ public class RayMove : MonoBehaviour
         if(inputSystem.GetMouseYValue() != 0)
         {
             CameRotRound = CamearRround();
-            Debug.Log(CameRotRound);
             if (CamearTrans.transform.position.z > 0 && CameRotRound)
             {
                 CamearTrans.transform.RotateAround(this.transform.position, Vector3.right, inputSystem.GetMouseYValue() * 5);
@@ -237,11 +236,11 @@ public class RayMove : MonoBehaviour
             CameTrans.localEulerAngles = new Vector3(CameTrans.localEulerAngles.x - 20, CameTrans.localEulerAngles.y, 0);
             if (CameTrans.localEulerAngles.x < 340 && CameTrans.localEulerAngles.x > 180)
             {
-                CameTrans.localEulerAngles = new Vector3(340, transform.localEulerAngles.y, 0);
+                CameTrans.localEulerAngles = new Vector3(340, CameTrans.localEulerAngles.y, 0);
             }
             else if (CameTrans.localEulerAngles.x > 40 && CameTrans.localEulerAngles.x < 180)
             {
-                CameTrans.localEulerAngles = new Vector3(40, transform.localEulerAngles.y, 0);
+                CameTrans.localEulerAngles = new Vector3(40, CameTrans.localEulerAngles.y, 0);
             }
         }
         else

@@ -114,7 +114,7 @@ public class CharacterControllerTest
         var inputSystem = Substitute.For<IInputSystem>();
 
         inputSystem.GetMouseXValue().Returns(returnThis:36);
-        inputSystem.GetMouseYValue().Returns(returnThis:20);
+        inputSystem.GetMouseYValue().Returns(returnThis:18);
         rayMove.SetInputSystem(inputSystem);
         rayMove.CameRat();
 
