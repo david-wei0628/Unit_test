@@ -18,17 +18,17 @@ namespace UnitTest
     {
         public float GetHorizontalValue()
         {
-            float moveInputRL = Input.GetAxisRaw(axisName: "Horizontal");
+            float moveInputRL = Input.GetAxis(axisName: "Horizontal");
             return moveInputRL;
         }
         public float GetVerticalValue()
         {
-            float moveInputUD = Input.GetAxisRaw(axisName: "Vertical");
+            float moveInputUD = Input.GetAxis(axisName: "Vertical");
             return moveInputUD;
         }
         public float GetScrollWheelValue()
         {
-            float MouseScrollWheel = Input.GetAxisRaw("Mouse ScrollWheel");
+            float MouseScrollWheel = Input.GetAxis("Mouse ScrollWheel");
             return MouseScrollWheel;
         }
 

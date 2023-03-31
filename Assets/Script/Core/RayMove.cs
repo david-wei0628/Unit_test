@@ -16,6 +16,7 @@ public class RayMove : MonoBehaviour
     Ray ray;
     RaycastHit hit;
     Vector3 maps;
+    bool CameRotRound;
     //bool movelimit = true;
     //public GameObject MouseVFX;
 
@@ -25,7 +26,6 @@ public class RayMove : MonoBehaviour
         QualitySettings.vSyncCount = 0;//垂直同步
         Application.targetFrameRate = 100;//FPS禎數
 
-        //init_Unit();
         PlayMode_Star();
     }
 
@@ -176,13 +176,12 @@ public class RayMove : MonoBehaviour
         //}
     }
 
-    bool CameRotRound;
-
     public void CameRat()
     { 
         if (inputSystem.GetMouseXValue() != 0)
         {
             CamearTrans.transform.RotateAround(this.transform.position, Vector3.up, inputSystem.GetMouseXValue() * 5);
+            CamerTrans();
         }
         
         if(inputSystem.GetMouseYValue() != 0)
@@ -191,18 +190,15 @@ public class RayMove : MonoBehaviour
             if (CamearTrans.transform.position.z > 0 && CameRotRound)
             {
                 CamearTrans.transform.RotateAround(this.transform.position, Vector3.right, inputSystem.GetMouseYValue() * 5);
+                CamerTrans();
             }
             else if(CamearTrans.transform.position.z < 0 && CameRotRound)
             {
                 CamearTrans.transform.RotateAround(this.transform.position, Vector3.left, inputSystem.GetMouseYValue() * 5);
+                CamerTrans();
             }
-            
-
         }
-
-        CamerTrans();
-        //上下範圍 X軸 340~40
-        //Y,Z做導向,Z平行於場景  X 做指向
+        //CamerTrans();
     }
 
     bool CamearRround()
@@ -230,23 +226,20 @@ public class RayMove : MonoBehaviour
 
     void CamerTrans()
     {
+        CameTrans.LookAt(this.transform.position);
+        CameTrans.localEulerAngles = new Vector3(CameTrans.localEulerAngles.x - 20, CameTrans.localEulerAngles.y, 0);
         if (Input.GetMouseButton(1))
         {
-            CameTrans.LookAt(this.transform.position);
-            CameTrans.localEulerAngles = new Vector3(CameTrans.localEulerAngles.x - 20, CameTrans.localEulerAngles.y, 0);
             if (CameTrans.localEulerAngles.x < 340 && CameTrans.localEulerAngles.x > 180)
             {
+                CameTrans.LookAt(this.transform.position);
                 CameTrans.localEulerAngles = new Vector3(340, CameTrans.localEulerAngles.y, 0);
             }
             else if (CameTrans.localEulerAngles.x > 40 && CameTrans.localEulerAngles.x < 180)
             {
+                CameTrans.LookAt(this.transform.position);
                 CameTrans.localEulerAngles = new Vector3(40, CameTrans.localEulerAngles.y, 0);
             }
-        }
-        else
-        {
-            CameTrans.LookAt(this.transform.position);
-            CameTrans.localEulerAngles = new Vector3(CameTrans.localEulerAngles.x - 20, CameTrans.localEulerAngles.y, 0);
         }
     }
 

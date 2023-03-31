@@ -119,7 +119,7 @@ public class CharacterControllerTest
         rayMove.CameRat();
 
         var PlayUnitMoveTransform = rayMove.CameTrans.transform.GetComponent<Transform>();
-        Debug.Log(PlayUnitMoveTransform.localEulerAngles);
+        //Debug.Log(PlayUnitMoveTransform.localEulerAngles);
         //Debug.Log(PlayUnitMoveTransform.localPosition);
     }
 
